@@ -4,9 +4,9 @@ import useData from "./useData";
 
 export default function useEdit(
   values: DATA
-): [DATA, (key: string, val: string) => void, () => void] {
+): [DATA, (key: string, val: string) => void, () => void, () => void] {
   const [data, setData] = useState<DATA>(values);
-  const [, , editExisted] = useData();
+  const [, , editExisted, removeExisted] = useData();
 
   const handleData = useCallback((key: string, val: string) => {
     setData((prev) => ({ ...prev, [key]: val }));
@@ -16,5 +16,10 @@ export default function useEdit(
     editExisted(data);
   }, [data, editExisted]);
 
-  return [data, handleData, saveData];
+  const removeData = useCallback(
+    () => removeExisted(data),
+    [data, removeExisted]
+  );
+
+  return [data, handleData, saveData, removeData];
 }

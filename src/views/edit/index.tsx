@@ -6,7 +6,7 @@ import Input from "../../components/input";
 import "./styles.scss";
 
 function Edit({ values, onSave }: { values: DATA; onSave(): void }) {
-  const [data, handleData, saveData] = useEdit(values);
+  const [data, handleData, saveData, removeData] = useEdit(values);
   return (
     <div className="edit">
       <Input
@@ -44,6 +44,15 @@ function Edit({ values, onSave }: { values: DATA; onSave(): void }) {
         }
       >
         Save
+      </Button>
+      <Button
+        className="button"
+        onClick={() => {
+          removeData();
+          onSave();
+        }}
+      >
+        Remove
       </Button>
     </div>
   );

@@ -1,26 +1,20 @@
 import { useState, useCallback, createContext, useContext } from "react";
 import { DATA } from "./useCreate";
-const fs = window.require?.("fs");
+import passkeeper from "../modules";
 
-const readFromJson = () => {
-  try {
-    const row = fs.readFileSync("./backup.json");
-    return JSON.parse(row);
-  } catch (e) {
-    return [];
-  }
-};
+const { readFromJson, writeJson } = passkeeper;
 
 export const DataContext = createContext({});
 
 export default function useData() {
-  return useContext<[DATA[], (item: DATA) => void, (item: DATA) => void]>(
-    DataContext as any
-  );
+  return useContext<
+    [DATA[], (item: DATA) => void, (item: DATA) => void, (item: DATA) => void]
+  >(DataContext as any);
 }
 
 export function useDataHook(): [
   DATA[],
+  (item: DATA) => void,
   (item: DATA) => void,
   (item: DATA) => void
 ] {
@@ -32,10 +26,7 @@ export function useDataHook(): [
       newData = [...prev, item];
       return newData;
     });
-    if (!fs) return;
-    fs.writeFile("./backup.json", JSON.stringify(newData), (err: any) => {
-      if (err) console.log("Error writing file:", err);
-    });
+    writeJson(newData);
   }, []);
 
   const editExisted = useCallback(
@@ -43,14 +34,20 @@ export function useDataHook(): [
       const newData = data.map((d) => (d.uuid === item.uuid ? item : d));
 
       setData(newData);
-      console.log(fs);
-      if (!fs) return;
-      fs.writeFile("./backup.json", JSON.stringify(newData), (err: any) => {
-        if (err) console.log("Error writing file:", err);
-      });
+      writeJson(newData);
     },
     [data]
   );
 
-  return [data, addNew, editExisted];
+  const removeExisted = useCallback(
+    (item: DATA) => {
+      const newData = data.filter((d) => d.uuid !== item.uuid);
+
+      setData(newData);
+      writeJson(newData);
+    },
+    [data]
+  );
+
+  return [data, addNew, editExisted, removeExisted];
 }
