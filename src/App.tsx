@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import Create from "./views/create";
-import List from "./views/list";
-import useView, { VIEWS } from "./hooks/useView";
-import "./styles.scss";
-import { useDataHook, DataContext } from "./hooks/useData";
-import Button from "./components/button";
-import Edit from "./views/edit";
-import { DATA } from "./hooks/useCreate";
+import { Container, Button } from "react-bootstrap";
+
+import Create from "views/create";
+import List from "views/list";
+import useView, { VIEWS } from "hooks/useView";
+import { useDataHook, DataContext } from "hooks/useData";
+import Edit from "views/edit";
+import { DATA } from "hooks/useCreate";
+
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   const [view, setView] = useView();
@@ -26,13 +28,15 @@ function App() {
 
   return (
     <DataContext.Provider value={dataHook}>
-      <div className="App">
+      {/* <div className="App"> */}
+      <Container className="py-5">
         <Button
-          className="create-btn"
+          variant="outline-primary"
           onClick={() => {
             setView(view !== VIEWS.HOME ? VIEWS.HOME : VIEWS.CREATE);
             setEdited(undefined);
           }}
+          className="mb-4"
         >
           {view !== VIEWS.HOME ? "Back" : "Create"}
         </Button>
@@ -41,7 +45,8 @@ function App() {
         {view === VIEWS.EDIT && edited && (
           <Edit values={edited} onSave={onSaveOrUpdate} />
         )}
-      </div>
+      </Container>
+      {/* </div> */}
     </DataContext.Provider>
   );
 }

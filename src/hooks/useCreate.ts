@@ -6,6 +6,7 @@ export type DATA = {
   title: string;
   password: string;
   repeat: string;
+  description: string;
 };
 
 const initial = {
@@ -13,6 +14,7 @@ const initial = {
   title: "",
   password: "",
   repeat: "",
+  description: "",
 };
 
 function uuidv4() {
