@@ -6,8 +6,8 @@ const url = require("url");
 // Create the native browser window.
 function createWindow() {
   const mainWindow = new BrowserWindow({
-    width: 400,
-    height: 600,
+    width: 500,
+    height: 650,
     // Set the path of an additional "preload" script that can be used to
     // communicate between the node-land and the browser-land.
     webPreferences: {
