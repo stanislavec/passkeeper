@@ -10,7 +10,7 @@ const app = remote.app;
 
 const readFromJson = () => {
   try {
-    const row = fs.readFileSync(app.getPath("home") + "/backup.json");
+    const row = fs.readFileSync(app.getPath("home") + "/passkeeper.json");
     return JSON.parse(row).map((item) => ({
       ...item,
       password: base64.decode(item.password),
@@ -23,7 +23,7 @@ const readFromJson = () => {
 
 const writeJson = (content) => {
   fs.writeFile(
-    app.getPath("home") + "/backup.json",
+    app.getPath("home") + "/passkeeper.json",
     JSON.stringify(
       content.map((item) => {
         const { password, repeat } = item;
