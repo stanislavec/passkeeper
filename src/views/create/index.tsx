@@ -1,8 +1,17 @@
-import useCreate from "hooks/useCreate";
+import { useState, useCallback } from "react";
+import { PasskeeperEntity, usePasskeeper } from "hooks/usePasskeeper";
 import { Button, Form } from "react-bootstrap";
 
-function Create({ onSave }: { onSave(): void }) {
-  const [data, handleData, addNew] = useCreate();
+function Create() {
+  const [data, setData] = useState({} as PasskeeperEntity);
+  const [, { createNew }] = usePasskeeper();
+
+  const handleData = useCallback(
+    (key: string, value: string) =>
+      setData((prevState) => ({ ...prevState!, [key]: value || "" })),
+    []
+  );
+
   return (
     <>
       <Form>
@@ -44,10 +53,7 @@ function Create({ onSave }: { onSave(): void }) {
         <Button
           variant="success"
           className="me-2"
-          onClick={() => {
-            addNew();
-            onSave();
-          }}
+          onClick={() => createNew(data)}
           disabled={
             !data.title ||
             !data.password ||

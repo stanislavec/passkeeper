@@ -1,9 +1,17 @@
-import { DATA } from "hooks/useCreate";
-import useEdit from "hooks/useEdit";
+import { useCallback } from "react";
+import { usePasskeeper } from "hooks/usePasskeeper";
 import { Button, Form } from "react-bootstrap";
 
-function Edit({ values, onSave }: { values: DATA; onSave(): void }) {
-  const [data, handleData, saveData, removeData] = useEdit(values);
+function Edit() {
+  const [{ edited: data }, { setEdited, editExisted, removeExisted }] =
+    usePasskeeper();
+
+  const handleData = useCallback(
+    (key: string, value: string) =>
+      setEdited((prevState) => ({ ...prevState!, [key]: value || "" })),
+    [setEdited]
+  );
+
   return (
     <>
       <Form>
@@ -11,7 +19,7 @@ function Edit({ values, onSave }: { values: DATA; onSave(): void }) {
           <Form.Label>Title</Form.Label>
           <Form.Control
             type="text"
-            value={data.title || ""}
+            value={data?.title || ""}
             onChange={(e) => handleData("title", e.target.value || "")}
           />
         </Form.Group>
@@ -19,7 +27,7 @@ function Edit({ values, onSave }: { values: DATA; onSave(): void }) {
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
-            value={data.password || ""}
+            value={data?.password || ""}
             onChange={(e) => handleData("password", e.target.value || "")}
           />
         </Form.Group>
@@ -27,7 +35,7 @@ function Edit({ values, onSave }: { values: DATA; onSave(): void }) {
           <Form.Label>Repeat password</Form.Label>
           <Form.Control
             type="password"
-            value={data.repeat || ""}
+            value={data?.repeat || ""}
             onChange={(e) => handleData("repeat", e.target.value || "")}
           />
         </Form.Group>
@@ -35,7 +43,7 @@ function Edit({ values, onSave }: { values: DATA; onSave(): void }) {
           <Form.Label>Additional information</Form.Label>
           <Form.Control
             as="textarea"
-            value={data.description || ""}
+            value={data?.description || ""}
             onChange={(e) => handleData("description", e.target.value || "")}
             rows={2}
           />
@@ -45,26 +53,17 @@ function Edit({ values, onSave }: { values: DATA; onSave(): void }) {
         <Button
           variant="success"
           className="me-2"
-          onClick={() => {
-            saveData();
-            onSave();
-          }}
+          onClick={editExisted}
           disabled={
-            !data.title ||
-            !data.password ||
-            !data.repeat ||
-            data.password !== data.repeat
+            !data?.title ||
+            !data?.password ||
+            !data?.repeat ||
+            data?.password !== data?.repeat
           }
         >
           Save
         </Button>
-        <Button
-          variant="danger"
-          onClick={() => {
-            removeData();
-            onSave();
-          }}
-        >
+        <Button variant="danger" onClick={removeExisted}>
           Remove
         </Button>
       </div>

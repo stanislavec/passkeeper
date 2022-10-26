@@ -2,8 +2,7 @@ import React, { useState, useRef } from "react";
 import { Alert, ListGroup, Badge, Tooltip, Overlay } from "react-bootstrap";
 import copy from "copy-to-clipboard";
 
-import { DATA } from "hooks/useCreate";
-import useData from "hooks/useData";
+import { PasskeeperEntity, usePasskeeper } from "hooks/usePasskeeper";
 
 const CopyComponent: React.FC<{ onCopy(): void; show: boolean }> = ({
   onCopy,
@@ -45,11 +44,11 @@ const CopyComponent: React.FC<{ onCopy(): void; show: boolean }> = ({
   );
 };
 
-export default function List({ setEdited }: { setEdited(item: DATA): void }) {
-  const [list] = useData();
+export default function List() {
+  const [{ data: list }, { setItemToEdit }] = usePasskeeper();
   const [copied, setCopied] = useState<string[]>([]);
 
-  const handleCopy = (el: DATA) => {
+  const handleCopy = (el: PasskeeperEntity) => {
     copy(el.password);
     let newData = [];
     setCopied((p) => {
@@ -76,7 +75,12 @@ export default function List({ setEdited }: { setEdited(item: DATA): void }) {
             <div className="fw-bold">{el.title}</div>
             {el.description}
           </div>
-          <Badge bg="dark" className="me-2" pill onClick={() => setEdited(el)}>
+          <Badge
+            bg="dark"
+            className="me-2"
+            pill
+            onClick={() => setItemToEdit(el)}
+          >
             <svg
               width="16"
               height="16"
