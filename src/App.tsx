@@ -6,6 +6,7 @@ import { PasskeeperProvider, usePasskeeper, VIEWS } from "hooks/usePasskeeper";
 import Edit from "views/edit";
 
 import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 const AppComponents = () => {
   const [{ view, edited }, { setView, setEdited }] = usePasskeeper();

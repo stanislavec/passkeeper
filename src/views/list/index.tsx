@@ -72,8 +72,19 @@ export default function List() {
           className="d-flex justify-content-between align-items-start"
         >
           <div className="ms-2 me-auto">
-            <div className="fw-bold">{el.title}</div>
-            {el.description}
+            <div className="fw-bold mb-2">{el.title}</div>
+            {el.username && (
+              <div className="d-flex align-items-start mb-1">
+                <i className="bi bi-person-circle me-2"></i>
+                {el.username}
+              </div>
+            )}
+            {el.description && (
+              <small className="d-flex align-items-start">
+                <i className="bi bi-info-circle me-2"></i>
+                {el.description}
+              </small>
+            )}
           </div>
           <Badge
             bg="dark"

@@ -23,6 +23,14 @@ function Create() {
             onChange={(e) => handleData("title", e.target.value || "")}
           />
         </Form.Group>
+        <Form.Group className="mb-3" controlId="username">
+          <Form.Label>Username or login</Form.Label>
+          <Form.Control
+            type="text"
+            value={data.username || ""}
+            onChange={(e) => handleData("username", e.target.value || "")}
+          />
+        </Form.Group>
         <Form.Group className="mb-3" controlId="title">
           <Form.Label>Password</Form.Label>
           <Form.Control

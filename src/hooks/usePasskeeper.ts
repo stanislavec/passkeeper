@@ -13,6 +13,7 @@ export enum VIEWS {
 export type PasskeeperEntity = {
   uuid: string;
   title: string;
+  username: string;
   password: string;
   repeat: string;
   description: string;
